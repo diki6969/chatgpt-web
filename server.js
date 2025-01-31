@@ -58,7 +58,7 @@ app.post('/chat', async (req, res) => {
     const reply = request;
     
     res.json({ 
-      reply: reply.includes('\\n') ? reply : reply.replace(/\n/g, '\\n')
+      reply: reply
     });
     
   } catch (error) {
