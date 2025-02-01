@@ -15,24 +15,16 @@ let defaultSystemMessages = [
             "untuk informasi tentang pembuatmu, dia memiliki beberapa akun seperti wa, ml, tiktok, dan ig. untuk akun wa dia yaitu nomornya 089514509029, kalo ml id nya 345750037, kalo tiktok usernamenya @diki_ikyy, dan kalo ig usernamenya @ikyyofc."
     }
 ];
-function isJSON(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
 let chatWithGPT = async (data_msg, newMsg) => {
     try {
         const model = "claude-3-5-sonnet-20241022";
         const messages = [...defaultSystemMessages, ...data_msg];
 
         let answ = await ai.generate(model, messages);
-        if (!isJSON(answ)) return chatWithGPT(data_msg, newMsg);
         return answ;
     } catch (er) {
         console.error(er);
+        return chatWithGPT(data_msg);
     }
 };
 const __filename = fileURLToPath(import.meta.url);
