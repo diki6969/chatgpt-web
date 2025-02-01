@@ -17,7 +17,7 @@ let defaultSystemMessages = [
 ];
 let chatWithGPT = async (data_msg, newMsg) => {
     try {
-        const model = "claude-3-5-sonnet-20241022";
+        const model = "claude-3-5-sonnet-20241022-t";
         const messages = [...defaultSystemMessages, ...data_msg];
 
         let answ = await ai.generate(model, messages);
