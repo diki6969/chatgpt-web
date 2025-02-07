@@ -23,7 +23,8 @@ function initializeSession() {
     console.log("Session ID dibuat:", sessionID);
   } else {
     const sesi_id = sessionStorage.getItem("sessionID");
-    console.log("Session ID yang ada:",);
+    id_user = sesi_id
+    console.log("Session ID yang ada:",sesi_id);
   }
   // Reset session ID saat user meninggalkan halaman
   window.addEventListener("beforeunload", () => {
