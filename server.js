@@ -61,7 +61,7 @@ app.post("/chat", async (req, res) => {
 
         const reply = request;
 
-        res.json({
+        await res.json({
             reply: reply
         });
         conn.ai[user_id]
