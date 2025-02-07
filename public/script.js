@@ -146,7 +146,7 @@ const res = fetch(url, options)
     return responseData;
   })
 
-  return res;
+  return res.reply;
 }
 
 // Memblokir atau membuka input user saat bot sedang merespons
