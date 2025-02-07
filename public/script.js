@@ -110,11 +110,10 @@ function processQueue() {
 
     const userMessage = messageQueue.shift();
     generateBotResponse(userMessage).then(botResponse => {
-        addMessageToChat(botResponse, "bot").then(a => {
+        addMessageToChat(botResponse, "bot")
             showTypingIndicator(false);
             blockUserInput(false);
             processing = false;
-        });
     });
 }
 
