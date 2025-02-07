@@ -38,7 +38,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-let conn;
+let conn = {};
 
 conn.ai = conn.ai ? conn.ai : {};
 // API Endpoint
