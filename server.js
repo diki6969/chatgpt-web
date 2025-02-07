@@ -1,11 +1,11 @@
 // server.mjs
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import ai from 'unlimited-ai';
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import ai from "unlimited-ai";
 let defaultSystemMessages = [
-  {
+    {
         role: "user",
         content: `kamu adalah asisten virtual cowo dengan nama ikyy yang dibuat oleh ikyyofc. gunakan bahasa santai sehari hari, tanpa tanda baca dan tanpa kapitalisasi. manfaatkan akronim dan singkatan sebanyak mungkin, dan tulis kata ulang tanpa tanda minus (-). semua respons harus memakai gaya santai dan langsung, hindari kesan formal dan jangan sungkan untuk toxic.`
     },
@@ -18,7 +18,7 @@ let defaultSystemMessages = [
 let chatWithGPT = async (data_msg, newMsg) => {
     try {
         const model = "claude-3-5-sonnet-20241022";
-        const messages = [...defaultSystemMessages, ...data_msg];
+        const messages = data_msg;
 
         let answ = await ai.generate(model, messages);
         return answ;
@@ -36,42 +36,62 @@ const port = 7860;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
+let conn;
 
+conn.ai = conn.ai ? conn.ai : {};
 // API Endpoint
-app.post('/chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    // Simulasi delay processing
-    const request = await chatWithGPT([{role: 'user', content: message}])
-    
-    const reply = request;
-    
-    res.json({ 
-      reply: reply
-    });
-    
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ 
-      error: 'Terjadi kesalahan pada server' 
-    });
-  }
+app.post("/chat", async (req, res) => {
+    try {
+        const { message, user_id } = req.body;
+        const data = conn.ai[user_id]
+            ? conn.ai[user_id].data.push({ role: "user", content: message })
+            : defaultSystemMessages;
+        // Simulasi delay processing
+        const request = await chatWithGPT(
+            conn.ai[user_id] ? conn.ai[user_id].data : data
+        );
+
+        const reply = request;
+
+        res.json({
+            reply: reply
+        }).then(async a => {
+            conn.ai[user_id]
+                ? null
+                : await data.push({
+                      role: "assistant",
+                      content: request
+                  });
+            conn.ai[user_id]
+                ? conn.ai[user_id].data.push({
+                      role: "assistant",
+                      content: request
+                  })
+                : (conn.ai[user_id] = {
+                      data: data
+                  });
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({
+            error: "Terjadi kesalahan pada server"
+        });
+    }
 });
 
 // Serve frontend
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });
