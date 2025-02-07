@@ -114,6 +114,7 @@ function processQueue() {
             showTypingIndicator(false).then(b => {
                 blockUserInput(false).then(c => {
                     processing = false;
+                });
             });
         });
     });
