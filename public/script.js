@@ -111,7 +111,7 @@ async function processQueue() {
       const userMessage = messageQueue.shift();
       
       // Simulasi delay mengetik sebelum merespon
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      //await new Promise(resolve => setTimeout(resolve, 2000));
       
       const botResponse = await generateBotResponse(userMessage);
       await addMessageToChat(botResponse, "bot");
