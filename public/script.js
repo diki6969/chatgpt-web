@@ -3,6 +3,7 @@
 // Variabel global untuk sistem antrian pesan dan pengelolaan sesi
 let messageQueue = [];
 let processing = false;
+let id_user;
 let inactivityTimeout;
 const INACTIVITY_LIMIT = 30 * 60 * 1000; // 30 menit
 
@@ -18,9 +19,11 @@ function initializeSession() {
   if (!sessionStorage.getItem("sessionID")) {
     const sessionID = generateSessionID();
     sessionStorage.setItem("sessionID", sessionID);
+    id_user = sessionID
     console.log("Session ID dibuat:", sessionID);
   } else {
-    console.log("Session ID yang ada:", sessionStorage.getItem("sessionID"));
+    const sesi_id = sessionStorage.getItem("sessionID");
+    console.log("Session ID yang ada:",);
   }
   // Reset session ID saat user meninggalkan halaman
   window.addEventListener("beforeunload", () => {
