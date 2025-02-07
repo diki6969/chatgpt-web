@@ -47,7 +47,13 @@ app.post("/chat", async (req, res) => {
         const { message, user_id } = req.body;
         const data = conn.ai[user_id]
             ? conn.ai[user_id].data.push({ role: "user", content: message })
-            : defaultSystemMessages;
+            : [
+                  ...defaultSystemMessages,
+                  {
+                      role: "user",
+                      content: message
+                  }
+              ];
         // Simulasi delay processing
         const request = await chatWithGPT(
             conn.ai[user_id] ? conn.ai[user_id].data : data
