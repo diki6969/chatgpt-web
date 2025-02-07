@@ -63,22 +63,21 @@ app.post("/chat", async (req, res) => {
 
         res.json({
             reply: reply
-        }).then(async a => {
-            conn.ai[user_id]
-                ? null
-                : await data.push({
-                      role: "assistant",
-                      content: request
-                  });
-            conn.ai[user_id]
-                ? conn.ai[user_id].data.push({
-                      role: "assistant",
-                      content: request
-                  })
-                : (conn.ai[user_id] = {
-                      data: data
-                  });
         });
+        conn.ai[user_id]
+            ? null
+            : await data.push({
+                  role: "assistant",
+                  content: request
+              });
+        conn.ai[user_id]
+            ? conn.ai[user_id].data.push({
+                  role: "assistant",
+                  content: request
+              })
+            : (conn.ai[user_id] = {
+                  data: data
+              });
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({
