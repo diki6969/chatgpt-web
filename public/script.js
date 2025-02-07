@@ -99,7 +99,7 @@ function enqueueBotResponse(userMessage) {
 }
 
 // Memproses antrian pesan satu per satu
-function processQueue() {
+async function processQueue() {
   if (processing || messageQueue.length === 0) return;
 
   processing = true;
@@ -108,7 +108,7 @@ function processQueue() {
 
   // Simulasikan delay mengetik bot (misal: 2 detik)
     const userMessage = messageQueue.shift();
-    const botResponse = generateBotResponse(userMessage);
+    const botResponse = await generateBotResponse(userMessage);
     addMessageToChat(botResponse, "bot");
     showTypingIndicator(false);
     blockUserInput(false);
