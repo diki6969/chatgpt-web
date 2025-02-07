@@ -99,30 +99,26 @@ function enqueueBotResponse(userMessage) {
 }
 
 // Memproses antrian pesan satu per satu
-async function processQueue() {
+function processQueue() {
   if (processing || messageQueue.length === 0) return;
 
   processing = true;
   blockUserInput(true);
   showTypingIndicator(true);
 
-  const userMessage = messageQueue.shift();
-  try {
-    // Menunggu respon dari API secara asinkron
-    const botResponse = await generateBotResponse(userMessage);
+  // Simulasikan delay mengetik bot (misal: 2 detik)
+  setTimeout(() => {
+    const userMessage = messageQueue.shift();
+    const botResponse = generateBotResponse(userMessage);
     addMessageToChat(botResponse, "bot");
-  } catch (error) {
-    console.error("Error generating bot response:", error);
-  } finally {
     showTypingIndicator(false);
     blockUserInput(false);
     processing = false;
-  }
-
-  // Proses pesan berikutnya jika masih ada dalam antrian
-  if (messageQueue.length > 0) {
-    processQueue();
-  }
+    // Jika masih ada pesan dalam antrian, proses selanjutnya
+    if (messageQueue.length > 0) {
+      processQueue();
+    }
+  }, 2000);
 }
 
 // Generator respon bot sederhana (misalnya, echo pesan user)
