@@ -138,21 +138,15 @@ const options = {
   body: JSON.stringify(data)
 };
 
-fetch(url, options)
+const res = fetch(url, options)
   .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
     return response.json(); // Ubah respons menjadi objek JSON
   })
   .then(responseData => {
-    console.log('Data berhasil dikirim:', responseData);
+    return responseData;
   })
-  .catch(error => {
-    console.error('Terjadi kesalahan:', error);
-  });
 
-  return "Bot: \n" + userMessage;
+  return res;
 }
 
 // Memblokir atau membuka input user saat bot sedang merespons
