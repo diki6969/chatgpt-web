@@ -102,17 +102,17 @@ function enqueueBotResponse(userMessage) {
 async function processQueue() {
   if (processing || messageQueue.length === 0) return;
 
-  processing = true;
-  blockUserInput(true);
-  showTypingIndicator(true);
+  await processing = true;
+  await blockUserInput(true);
+  await showTypingIndicator(true);
 
   // Simulasikan delay mengetik bot (misal: 2 detik)
-    const userMessage = messageQueue.shift();
+    const userMessage = await messageQueue.shift();
     const botResponse = await generateBotResponse(userMessage);
-    addMessageToChat(botResponse, "bot");
-    showTypingIndicator(false);
-    blockUserInput(false);
-    processing = false;
+    await addMessageToChat(botResponse, "bot");
+    await showTypingIndicator(false);
+    await blockUserInput(false);
+    await processing = false;
     // Jika masih ada pesan dalam antrian, proses selanjutnya
     if (messageQueue.length > 0) {
       processQueue();
