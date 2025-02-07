@@ -114,11 +114,6 @@ function processQueue() {
             showTypingIndicator(false).then(b => {
                 blockUserInput(false).then(c => {
                     processing = false;
-                    // Jika masih ada pesan dalam antrian, proses selanjutnya
-                    if (messageQueue.length > 0) {
-                        processQueue();
-                    }
-                });
             });
         });
     });
