@@ -101,33 +101,27 @@ function enqueueBotResponse(userMessage) {
 // Memproses antrian pesan satu per satu
 async function processQueue() {
   if (processing || messageQueue.length === 0) return;
-  processing = true;
 
+  processing = true;
+  blockUserInput(true);
+  showTypingIndicator(true);
+
+  const userMessage = messageQueue.shift();
   try {
-    await blockUserInput(true);
-    await showTypingIndicator(true);
-    
-    while (messageQueue.length > 0) {
-      const userMessage = messageQueue.shift();
-      
-      // Simulasi delay mengetik sebelum merespon
-      //await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const botResponse = await generateBotResponse(userMessage);
-      await addMessageToChat(botResponse, "bot");
-    }
+    // Menunggu respon dari API secara asinkron
+    const botResponse = await generateBotResponse(userMessage);
+    addMessageToChat(botResponse, "bot");
   } catch (error) {
-    console.error("Error processing message:", error);
-    // Tambahkan logika penanganan error di sini
+    console.error("Error generating bot response:", error);
   } finally {
-    await showTypingIndicator(false);
-    await blockUserInput(false);
+    showTypingIndicator(false);
+    blockUserInput(false);
     processing = false;
-    
-    // Cek ulang antrian untuk pesan yang masuk saat proses
-    if (messageQueue.length > 0) {
-      processQueue();
-    }
+  }
+
+  // Proses pesan berikutnya jika masih ada dalam antrian
+  if (messageQueue.length > 0) {
+    processQueue();
   }
 }
 
