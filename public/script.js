@@ -107,7 +107,6 @@ function processQueue() {
   showTypingIndicator(true);
 
   // Simulasikan delay mengetik bot (misal: 2 detik)
-  setTimeout(() => {
     const userMessage = messageQueue.shift();
     const botResponse = generateBotResponse(userMessage);
     addMessageToChat(botResponse, "bot");
@@ -118,7 +117,6 @@ function processQueue() {
     if (messageQueue.length > 0) {
       processQueue();
     }
-  }, 2000);
 }
 
 // Generator respon bot sederhana (misalnya, echo pesan user)
