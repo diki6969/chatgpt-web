@@ -125,7 +125,7 @@ function processQueue() {
 }
 
 // Generator respon bot sederhana (misalnya, echo pesan user)
-function generateBotResponse(userMessage, user_ID) {
+async function generateBotResponse(userMessage, user_ID) {
     const url = "/chat"; // Ganti dengan URL API Anda
 
     const data = {
@@ -141,13 +141,7 @@ function generateBotResponse(userMessage, user_ID) {
         body: JSON.stringify(data)
     };
 
-    const res = fetch(url, options)
-        .then(response => {
-            return response.json(); // Ubah respons menjadi objek JSON
-        })
-        .then(responseData => {
-            return responseData;
-        });
+    const res = await (await fetch(url, options)).json();
 
     return res.reply;
 }
