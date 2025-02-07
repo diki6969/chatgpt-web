@@ -122,8 +122,36 @@ function processQueue() {
 }
 
 // Generator respon bot sederhana (misalnya, echo pesan user)
-function generateBotResponse(userMessage) {
-  // Format multi-line, whitespace, dan karakter spesial akan terjaga karena menggunakan textContent
+function generateBotResponse(userMessage, user_ID) {
+  const url = '/chat'; // Ganti dengan URL API Anda
+
+const data = {
+  message: userMessage,
+  user_id: user_ID
+};
+
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+};
+
+fetch(url, options)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json(); // Ubah respons menjadi objek JSON
+  })
+  .then(responseData => {
+    console.log('Data berhasil dikirim:', responseData);
+  })
+  .catch(error => {
+    console.error('Terjadi kesalahan:', error);
+  });
+
   return "Bot: \n" + userMessage;
 }
 
